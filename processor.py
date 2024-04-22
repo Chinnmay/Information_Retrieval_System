@@ -9,10 +9,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # Load the inverted index
 with open('index.pkl', 'rb') as f:
-    inverted_index = pickle.load(f)
+    vectorizer, tf_idf_matrix = pickle.load(f)
 
 # Load the documents
-with open('documents.pkl', 'rb') as f:
+with open('all_documents.pkl', 'rb') as f:
     documents = pickle.load(f)
 
 # Initialize Flask app
@@ -23,17 +23,16 @@ def process_query(query, top_k=5):
     # Validate query
     if not query:
         return jsonify({"error": "Empty query"})
-
     # Vectorize the query
-    vectorizer = TfidfVectorizer(vocabulary=inverted_index.keys())
-    query_vector = vectorizer.fit_transform([query])
-
+    query_vector = vectorizer.transform([query])
     # Calculate cosine similarity between query and documents
-    similarity_scores = cosine_similarity(query_vector, list(inverted_index.values()))
+    similarity_scores = cosine_similarity(query_vector, tf_idf_matrix)
+    
 
     # Get top-K ranked results
     top_results_indices = similarity_scores.argsort()[0][-top_k:][::-1]
-    top_results = [(documents[idx], similarity_scores[0][idx]) for idx in top_results_indices]
+    top_results = [(str(documents[idx]).split('\n')[0], similarity_scores[0][idx]) for idx in top_results_indices]
+
 
     return top_results
 
@@ -45,6 +44,7 @@ def process_query_route():
     top_k = data.get('top_k', 5)  # Default to top 5 results if top_k not specified
 
     results = process_query(query, top_k)
+    print(results)
     return jsonify(results)
 
 if __name__ == '__main__':
