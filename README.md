@@ -60,3 +60,18 @@ The code is well-documented and follows best practices for readability and maint
 
 # Bibliography:
 References to relevant literature, libraries, and frameworks used in the development of the Information Retrieval System are provided within the code comments and documentation. Citations follow the Chicago style for consistency and clarity.
+
+Stack Overflow. Accessed April 21, 2024.  
+https://stackoverflow.com/questions/24253117/dynamic-start-urls-value. 
+  
+OpenAI. "OpenAI Chat." Accessed April 21, 2024.  
+https://chat.openai.com.
+  
+Python Software Foundation. "re — Regular expression operations." Accessed April 21, 2024.   
+https://docs.python.org/3/library/re.html.
+
+scikit-learn developers. "scikit-learn: Machine Learning in Python." Accessed April 21, 2024. 
+https://scikit-learn.org.
+
+Pallets Projects. "Flask 3.0.x documentation." Accessed April 21, 2024. 
+https://flask.palletsprojects.com/en/3.0.x/.

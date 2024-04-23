@@ -5,27 +5,26 @@ import pickle
 from scrapy.linkextractors import LinkExtractor
 
 class IRSSpider(scrapy.Spider):
+    # Name of the spider
     name = "InformationRetrievalSystemSpider"
     custom_settings = {
         "LOG_LEVEL": "INFO"
     }
-    max_depth = 2
-    max_pages = 50
+    # Number of visited links
     visited_links_counter = 0
-
     output_dir = os.path.curdir
     output_file = "all_documents.pkl"
 
-    #scrapy crawl crawler.py -a start_url=https://www.iit.edu max_depth=3 -a max_pages=500
+    # Usage: scrapy crawl crawler.py -a start_url=https://www.iit.edu max_depth=3 -a max_pages=500
 
+    # Extracts the domain name from the given URL.
     def extract_domain(self, url):
-        """
-        Extracts the domain name from the given URL.
-        """
+        # https://docs.python.org/3/library/re.html
         if not url:
             return None
         return re.findall(r'https?://(?:www\.)?(.*?)/', url)[0]
 
+    # Constructor to initialize the spider
     def __init__(self, start_url=None, max_depth=4, max_pages=1000, *args, **kwargs):
         super(IRSSpider, self).__init__(*args, **kwargs)
         self.start_urls = [start_url] if start_url else []
@@ -34,17 +33,15 @@ class IRSSpider(scrapy.Spider):
         self.max_pages = int(max_pages)
         self.visited_links_counter = 0
 
+    # Method to start the spider
     def start_requests(self):
         for url in self.start_urls:
+            # Initialize the visited links set and documents list
             yield scrapy.Request(url=url, callback=self.parse, meta={'depth': 1, 'visited_links': set(), 'documents': []})
 
-    """def start_requests(self):    
-        urls = ['https://www.iit.edu']  # replace with the URL you want to start crawling
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse, meta={'depth': 1, 'visited_links': set(), 'documents': []})
-    """
-
+    # Method to parse the response
     def parse(self, response):
+        # Extract the depth, visited links, and documents from the response meta
         depth = response.meta.get('depth')
         visited_links = response.meta['visited_links']
         documents = response.meta['documents']
@@ -60,9 +57,12 @@ class IRSSpider(scrapy.Spider):
         # print(f"Links on page {response.url}: {len(links)}")
         # print(f"Depth: {depth}")
 
+        # Extracting the absolute URL and checking if it has been visited
         for link in links:
+            # Extract the absolute URL
             absolute_url = link.url.split('#')[0]
             if absolute_url not in visited_links:
+                # Check if the link is within the allowed domains
                 if self.max_depth >= depth and self.visited_links_counter <= self.max_pages:
                     visited_links.add(absolute_url)
                     self.visited_links_counter += 1
