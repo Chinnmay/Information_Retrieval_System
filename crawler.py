@@ -15,7 +15,7 @@ class IRSSpider(scrapy.Spider):
     output_dir = os.path.curdir
     output_file = "all_documents.pkl"
 
-    # Usage: scrapy crawl crawler.py -a start_url=https://www.iit.edu/ -a max_depth=3 -a max_pages=500
+    # Usage: scrapy runspider crawler.py -a start_url=https://www.iit.edu/ -a max_depth=3 -a max_pages=500
 
     # Extracts the domain name from the given URL.
     def extract_domain(self, url):
