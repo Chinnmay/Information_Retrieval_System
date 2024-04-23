@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Retrieval System</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Information Retrieval System</h1>
+    <form id="searchForm">
+        <label for="query">Enter your query:</label><br>
+        <input type="text" id="query" name="query" required><br>
+        <label for="top_k">Number of top results:</label><br>
+        <input type="number" id="top_k" name="top_k" value="5" min="1"><br><br>
+        <input type="submit" value="Search">
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#searchForm').submit(function(event) {
+                event.preventDefault();
+                var formData = {
+                    'query': $('#query').val(),
+                    'top_k': $('#top_k').val()
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '/process_query',
+                    data: JSON.stringify(formData),
+                    contentType: 'application/json',
+                    success: function(data) {
+                        displayResults(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+
+            function displayResults(results) {
+                $('#results').empty(); // Clear previous results
+                var resultHtml = '<h2>Search Results</h2>';
+                resultHtml += '<ul>';
+                results.forEach(function(result) {
+                    resultHtml += '<li>' + result[0] + ' (Score: ' + result[1] + ')</li>';
+                });
+                resultHtml += '</ul>';
+                $('#results').html(resultHtml);
+            }
+        });
+    </script>
+</body>
+</html>
