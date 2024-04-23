@@ -23,7 +23,7 @@ To operate the IRS, follow these steps:
 2. **Running the System**:
    - Start with the crawler module:
      ```bash
-     scrapy crawl crawler.py -a start_url=https://www.example.com -a max_depth=3 -a max_pages=100
+     scrapy runspider crawler.py -a start_url=https://www.iit.edu/ -a max_depth=3 -a max_pages=500
      ```
    - Next, run the indexer module to construct the inverted index:
      ```bash
@@ -35,7 +35,7 @@ To operate the IRS, follow these steps:
      ```
    - Hit the api, to process your query to get JSON response:
      ```bash
-     curl -X POST -H "Content-Type: application/json" -d '{"query": "<Your Query>", "top_k": <TOP K NUMBER>}' http://localhost:5000/process_query
+     curl -X POST -H "Content-Type: application/json" -d '{"query": "<Your Query>", "top_k": <TOP K NUMBER>}' http://127.0.0.1:50000/process_query
      ```
 
 By following these steps, you can effectively operate the IRS, from crawling web documents to processing user queries.

@@ -4,7 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Usage:
-# curl -X POST -H "Content-Type: application/json" -d '{"query": "information retrieval system", "top_k": 3}' http://localhost:5000/process_query
+# curl -X POST -H "Content-Type: application/json" -d '{"query": "information retrieval system", "top_k": 3}' http://127.0.0.1:5000/process_query
 
 # Load the inverted index
 with open('index.pkl', 'rb') as f:
