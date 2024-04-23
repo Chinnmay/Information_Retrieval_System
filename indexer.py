@@ -47,31 +47,11 @@ def retrieve_all_documents(file_path):
     return all_documents
 
 
-if __name__ == "__main__":
-    # Example usage
-    documents = [
-        "This is the first document.",
-        "This document is the second document.",
-        "And this is the third one.",
-        "Is this the first document?",
-    ]
-
-    # Example usage
+if __name__ == "__main__":    
     output_file = "all_documents.pkl"
     documents = retrieve_all_documents(output_file)
-    #print(stored_documents[1])
-    #print length of documents
-    print(len(documents))
-
+    
     indexer = Indexer(documents)
     indexer.fit_transform()
     indexer.save_index()
-
-    # Later, to perform a search
-    query = "Campus Life hosts service learning and community service opportunities throughout the year. These allow you to get involved in the community, to meet fellow students outside of the classroom, and to put your values into practice."
-    indexer.load_index()
-    results = indexer.search(query)
-
-    for idx, score in results:
-        url = str(documents[idx]).split('\n')[0]
-        print(f"Document: {url} - Score: {score}")
+    print("Index created and saved successfully.")  
